@@ -2,5 +2,6 @@ package store.product;
 
 public record ProductOut(
     String id,
-    String name
+    String name,
+    double preco
 ) {}

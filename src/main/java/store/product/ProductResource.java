@@ -4,35 +4,42 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ProductResource {
 
-    // Singleton
-    static final Map<String, ProductOut> produtos = new HashMap<String, ProductOut>();
-    static {
-        produtos.put("1", new ProductOut("1", "Sushi"));
-        produtos.put("2", new ProductOut("2", "Temaki"));
-    }
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/product")
     public List<ProductOut> list() {
-        return new ArrayList<>(produtos.values());
+        return productService.list();
     }
 
     @GetMapping("/product/{id}")
     public ProductOut get(@PathVariable(required = true) String id) {
-        return produtos.get(id);
+        return productService.find(id);
     }
 
     @DeleteMapping("/product/{id}")
     public void delete(@PathVariable(required = true) String id) {
-        produtos.remove(id);
+        productService.delete(id);
+    }
+
+    @PostMapping("/product")
+    public void create(@RequestBody ProductIn in) {
+        productService.create(in);
     }
 
 }
