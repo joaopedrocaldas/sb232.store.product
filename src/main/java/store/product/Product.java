@@ -1,4 +1,4 @@
-package store.client;
+package store.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
